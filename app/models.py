@@ -6,4 +6,3 @@ class Users(models.Model):
     mail = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     USERNAME_FIELD = 'name'
-

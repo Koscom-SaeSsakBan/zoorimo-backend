@@ -8,6 +8,3 @@ install:
 # command to run tests
 script:
   - pytest
-
-  # pylint
-  - pylint app
