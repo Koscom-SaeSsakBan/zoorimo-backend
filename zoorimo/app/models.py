@@ -1,4 +1,4 @@
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, AbstractUser
 from django.db import models
 
@@ -27,7 +27,10 @@ class Zoorimo(models.Model):
     )
     size = models.IntegerField(
         verbose_name='크기',
-        max_length='100',
+        null=False
+    )
+    status = models.IntegerField(
+        verbose_name='상태',
         null=False
     )
 
@@ -68,4 +71,23 @@ class Quiz(models.Model):
         max_length=255,
         null=False,
         blank=False
+    )
+    solution = models.CharField(
+        verbose_name='해설',
+        max_length=255,
+        null=False,
+        blank=False
+    )
+
+
+class Kospi(models.Model):
+    name = models.CharField(
+        verbose_name='이름',
+        max_length=255,
+        null=False,
+        blank=False
+    )
+    code = models.IntegerField(
+        verbose_name='코드',
+        null=False
     )

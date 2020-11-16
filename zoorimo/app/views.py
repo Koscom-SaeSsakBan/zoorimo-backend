@@ -32,6 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
         z = Zoorimo()
         z.user = u
         z.size = 10
+        z.status = 0
         z.save()
         return Response(UserInfoSerializer(instance=u).data, status.HTTP_201_CREATED)
 
