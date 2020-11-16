@@ -19,6 +19,10 @@ router.register(r'users', views.UserViewSet, basename='user')
 user_router = routers.NestedDefaultRouter(router, r'users', lookup='user')
 user_router.register(r'zoorimo', views.ZoorimoViewSet, basename='zoorimo')
 user_router.register(r'quiz', views.QuizViewSet, basename='quiz')
+user_router.register(r'kospi', views.KospiViewSet, basename='kospi')
+
+# user_router.register(r'quiz/false', views.QuizViewSet, basename='quiz')
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Snippets API",
@@ -41,5 +45,9 @@ urlpatterns = [
     path(r'api/v1/', include(router.urls)),
     path(r'api/v1/', include(user_router.urls)),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    url('api/v1/users/(?P<user_pk>[0-9]+)/quiz/true', views.QuizTrueViewSet.as_view()),
+    url('api/v1/users/(?P<user_pk>[0-9]+)/stock/register', views.StockRegisterViewSet.as_view()),
+    url('api/v1/users/(?P<user_pk>[0-9]+)/status', views.CalStatusViewSet.as_view()),
 ]

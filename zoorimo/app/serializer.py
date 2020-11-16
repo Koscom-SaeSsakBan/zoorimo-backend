@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from zoorimo.app.models import User, Zoorimo, Quiz
+from zoorimo.app.models import User, Zoorimo, Quiz, Kospi, Stock
 
 
 class SignInSerializer(serializers.Serializer):
@@ -72,4 +72,16 @@ class ZoorimoInfoSerializer(serializers.ModelSerializer):
 class QuizInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
+        fields = '__all__'
+
+
+class KospiInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Kospi
+        fields = '__all__'
+
+
+class StockSaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stock
         fields = '__all__'

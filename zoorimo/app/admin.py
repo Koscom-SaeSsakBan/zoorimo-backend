@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import register, ModelAdmin
 
-from zoorimo.app.models import User, Zoorimo, Stock, Quiz
+from zoorimo.app.models import User, Zoorimo, Stock, Quiz, Kospi
 
 
 @register(User)
@@ -21,4 +21,9 @@ class StockAdmin(ModelAdmin):
 
 @register(Quiz)
 class QuizAdmin(ModelAdmin):
+    pass
+
+
+@register(Kospi)
+class KospiAdmin(ModelAdmin):
     pass
