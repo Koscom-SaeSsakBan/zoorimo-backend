@@ -5,6 +5,11 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_nested import routers
 
+
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 from zoorimo.app import views
 from django.contrib import admin
 
@@ -36,4 +41,4 @@ urlpatterns = [
     path(r'api/v1/', include(user_router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
