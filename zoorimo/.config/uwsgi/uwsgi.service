@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI service
+After=syslog.target
+
+[Service]
+ExecStart=/home/ubuntu/develop/zoorimo-backend/env/bin/uwsgi -i /home/ubuntu/develop/zoorimo-backend/zoorimo/.config/uwsgi/zoorimo.ini
+
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
