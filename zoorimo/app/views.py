@@ -1,12 +1,15 @@
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from zoorimo.app.models import User, Zoorimo
-from zoorimo.app.serializer import UserInfoSerializer, SignInSerializer, SignUpSerializer, ZoorimoInfoSerializer
+from zoorimo.app.models import User, Zoorimo, Quiz
+from zoorimo.app.serializer import UserInfoSerializer, SignInSerializer, SignUpSerializer, ZoorimoInfoSerializer, \
+    QuizInfoSerializer
+
+from django.shortcuts import get_object_or_404
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -43,6 +46,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ZoorimoViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
-        return Zoorimo.objects.filter(user=self.kwargs.get('user_pk'))
+        res = Zoorimo.objects.filter(user=self.kwargs.get('user_pk'))
+        if res.count() == 0:
+            raise serializers.ValidationError({"detail": "zoorimo not found"})
+        return res
 
     serializer_class = ZoorimoInfoSerializer
+
+
+class QuizViewSet(viewsets.ModelViewSet):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizInfoSerializer

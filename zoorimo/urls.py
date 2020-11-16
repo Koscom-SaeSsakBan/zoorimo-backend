@@ -17,7 +17,8 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, basename='user')
 
 user_router = routers.NestedDefaultRouter(router, r'users', lookup='user')
-user_router.register(r'zoorimos', views.ZoorimoViewSet, basename='zoorimo')
+user_router.register(r'zoorimo', views.ZoorimoViewSet, basename='zoorimo')
+user_router.register(r'quiz', views.QuizViewSet, basename='quiz')
 schema_view = get_schema_view(
     openapi.Info(
         title="Snippets API",

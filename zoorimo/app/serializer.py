@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from zoorimo.app.models import User, Zoorimo
+from zoorimo.app.models import User, Zoorimo, Quiz
 
 
 class SignInSerializer(serializers.Serializer):
@@ -64,7 +64,12 @@ class UserDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 class ZoorimoInfoSerializer(serializers.ModelSerializer):
     # user = UserInfoSerializer(read_only=True)
-
     class Meta:
         model = Zoorimo
+        fields = '__all__'
+
+
+class QuizInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quiz
         fields = '__all__'
