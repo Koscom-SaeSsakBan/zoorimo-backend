@@ -102,7 +102,7 @@ class CalStatusViewSet(APIView):
         total_price = 0
         cur_total_price = 0
         if len(stock_list) == 0:
-            return Response('{status : 0}', status=status.HTTP_200_OK)
+            return Response('{"status" : "0"}', status=status.HTTP_200_OK)
 
         for i in range(len(stock_list)):
             stock_code_list.append(stock_list[i].stock_name)
