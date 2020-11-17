@@ -92,7 +92,9 @@ class StockRegisterViewSet(APIView):
             s.average_price = stock_price
             s.save()
 
-        return Response('{detail : stocks are saved}', status=status.HTTP_200_OK)
+        return JsonResponse({
+            'detail': 'stocks are saved'
+        })
 
 
 class CalStatusViewSet(APIView):
@@ -104,8 +106,8 @@ class CalStatusViewSet(APIView):
         cur_total_price = 0
         if len(stock_list) == 0:
             return JsonResponse({
-                'status': '0'
-            }, json_dump_params = {'ensure_ascii': True})
+                    'status': '0'
+            })
 
         for i in range(len(stock_list)):
             stock_code_list.append(stock_list[i].stock_name)
@@ -132,7 +134,9 @@ class CalStatusViewSet(APIView):
         elif yield_rate > 2:
             zoorimo_status = -2
 
-        return Response('{status : '+str(zoorimo_status)+'}', status=status.HTTP_200_OK)
+        return JsonResponse({
+            'status': str(zoorimo_status)
+        })
 
 
 
