@@ -62,7 +62,7 @@ class QuizViewSet(viewsets.ModelViewSet):
 class QuizTrueViewSet(APIView):
     def get(self, request, user_pk, *args, **kwargs):
         zoorimo = Zoorimo.objects.filter(user_id=user_pk).first()
-        zoorimo.size += 1
+        zoorimo.size += 2
         print(zoorimo.__dict__)
         u = zoorimo.save()
 
@@ -176,7 +176,8 @@ class CalStatusViewSet(APIView):
             cur_price = response.json()['result']['trdPrc']
             cur_total_price += cur_price * stock_list[i].stock_count
 
-        yield_rate = ((cur_total_price - total_price) / total_price) * 100
+        ### 여기 For DEMO
+        yield_rate = ((cur_total_price - total_price) / total_price) * 10000
         zoorimo_status = 0
         print(yield_rate)
 
