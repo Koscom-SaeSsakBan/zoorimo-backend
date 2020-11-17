@@ -177,7 +177,7 @@ class CalStatusViewSet(APIView):
             cur_total_price += cur_price * stock_list[i].stock_count
 
         ### 여기 For DEMO
-        yield_rate = ((cur_total_price - total_price) / total_price) * 10000
+        yield_rate = ((cur_total_price - total_price) / total_price) * 100
         zoorimo_status = 0
         print(yield_rate)
 
