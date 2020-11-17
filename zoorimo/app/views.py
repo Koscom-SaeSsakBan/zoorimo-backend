@@ -104,8 +104,6 @@ class StockRegisterViewSet(APIView):
                 s.average_price = stock_price
                 s.save()
 
-
-
         return JsonResponse({
             'detail': 'stocks are saved'
         })
@@ -144,7 +142,7 @@ class StockStatusViewSet(APIView):
                 'stock_count': stock_count[i],
                 'cur_price': stock_cur_price[i],
                 'profit_and_loss': stock_cur_price[i] - stock_user_price[i],
-                'yield_rate': stock_cur_price[i] / stock_user_price[i]
+                'yield_rate': ((stock_cur_price[i] - stock_user_price[i]) / stock_user_price[i]) * 100
             }
             res_dict.append(dict)
 
@@ -172,24 +170,25 @@ class CalStatusViewSet(APIView):
             total_price += stock_list[i].stock_count * stock_list[i].average_price
 
             # Api 보내고 현재 평단가 계산
-            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx3c412d920c714a50bcc459a83fca3a04'
+            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xxb671398c26324a93b43ae78275d1e0a4'
             response = requests.get(URL)
 
             cur_price = response.json()['result']['trdPrc']
             cur_total_price += cur_price * stock_list[i].stock_count
 
-        yield_rate = cur_total_price / total_price
+        yield_rate = ((cur_total_price - total_price) / total_price) * 100
         zoorimo_status = 0
         print(yield_rate)
-        if yield_rate >= 2:
+
+        if yield_rate >= 100:
             zoorimo_status = 2
-        elif yield_rate >= 1.5:
+        elif yield_rate >= 50:
             zoorimo_status = 1
-        elif yield_rate >= 1:
+        elif yield_rate >= 0:
             zoorimo_status = 0
-        elif yield_rate >= 0.5:
+        elif yield_rate >= -50:
             zoorimo_status = -1
-        elif yield_rate > 2:
+        else:
             zoorimo_status = -2
 
         return JsonResponse({
