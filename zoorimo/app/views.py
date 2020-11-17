@@ -87,10 +87,24 @@ class StockRegisterViewSet(APIView):
             stock_count = stock_code_price[2]
 
             s.user = User.objects.get(id=user_pk)
-            s.stock_name = stock_code
-            s.stock_count = stock_count
-            s.average_price = stock_price
-            s.save()
+            exist_s = Stock.objects.all().filter(user=s.user)
+
+            is_exist = False
+            for j in range(len(exist_s)):
+                if str(exist_s[j].stock_name)==str(stock_code):
+                    is_exist = True
+                    break
+
+            if is_exist:
+                exist_s[j].stock_count = str(int(exist_s[j].stock_count) + int(stock_count))
+                exist_s[j].save()
+            else:
+                s.stock_name = stock_code
+                s.stock_count = stock_count
+                s.average_price = stock_price
+                # s.save()
+
+
 
         return JsonResponse({
             'detail': 'stocks are saved'
