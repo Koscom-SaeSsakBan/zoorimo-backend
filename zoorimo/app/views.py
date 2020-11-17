@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission
@@ -12,7 +12,7 @@ from zoorimo.app.models import User, Zoorimo, Quiz, Kospi, Stock
 from zoorimo.app.serializer import UserInfoSerializer, SignInSerializer, SignUpSerializer, ZoorimoInfoSerializer, \
     QuizInfoSerializer, KospiInfoSerializer
 
-import requests
+import requests, json
 
 class UserViewSet(viewsets.ModelViewSet):
     class UserPermissionClass(BasePermission):
@@ -97,6 +97,45 @@ class StockRegisterViewSet(APIView):
         })
 
 
+class StockStatusViewSet(APIView):
+    def get(self, request, user_pk, *args, **kwrags):
+        user = User.objects.get(id=user_pk)
+        stock_list = user.stock_user.all()
+        stock_code_list = []
+
+        stock_name_list = []
+        stock_user_price = []
+        stock_cur_price = []
+        res_dict = []
+
+        for i in range(len(stock_list)):
+            code = stock_list[i].stock_name
+            stock_code_list.append(code)
+            stock_name_list.append(Kospi.objects.get(code=code).name)
+            stock_user_price.append(stock_list[i].average_price)
+
+            # Api 보내고 현재 평단가 계산
+            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx3c412d920c714a50bcc459a83fca3a04'
+            response = requests.get(URL)
+
+            cur_price = response.json()['result']['trdPrc']
+            stock_cur_price.append(cur_price)
+
+        for i in range(len(stock_list)):
+            dict = {
+                'name': stock_name_list[i],
+                'user_price': stock_user_price[i],
+                'cur_price': stock_cur_price[i],
+                'profit_and_loss': stock_cur_price[i] - stock_user_price[i],
+                'yield_rate': stock_cur_price[i] / stock_user_price[i]
+            }
+            res_dict.append(dict)
+
+        res_dict = {'stock_list': res_dict}
+        resJson = json.dumps(res_dict, ensure_ascii = False)
+        return HttpResponse(resJson, content_type='application/json')
+
+
 class CalStatusViewSet(APIView):
     def get(self, request, user_pk, *args, **kwargs):
         user = User.objects.get(id=user_pk)
@@ -140,6 +179,3 @@ class CalStatusViewSet(APIView):
             'status': str(zoorimo_status),
             'size': str(zoorimo.size)
         })
-
-
-

@@ -5,10 +5,8 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_nested import routers
 
-
 from django.conf.urls.static import static
 from django.conf import settings
-
 
 from zoorimo.app import views
 from django.contrib import admin
@@ -50,4 +48,6 @@ urlpatterns = [
     url('api/v1/users/(?P<user_pk>[0-9]+)/quiz/true', views.QuizTrueViewSet.as_view()),
     url('api/v1/users/(?P<user_pk>[0-9]+)/stock/register', views.StockRegisterViewSet.as_view()),
     url('api/v1/users/(?P<user_pk>[0-9]+)/status', views.CalStatusViewSet.as_view()),
+    url('api/v1/users/(?P<user_pk>[0-9]+)/stock/status', views.StockStatusViewSet.as_view()),
+
 ]
