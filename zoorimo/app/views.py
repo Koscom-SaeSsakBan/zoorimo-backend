@@ -100,13 +100,15 @@ class StockRegisterViewSet(APIView):
 class CalStatusViewSet(APIView):
     def get(self, request, user_pk, *args, **kwargs):
         user = User.objects.get(id=user_pk)
+        zoorimo = Zoorimo.objects.get(user=user)
         stock_list = user.stock_user.all()
         stock_code_list = []
         total_price = 0
         cur_total_price = 0
         if len(stock_list) == 0:
             return JsonResponse({
-                    'status': '0'
+                    'status': '0',
+                    'size': str(zoorimo.size)
             })
 
         for i in range(len(stock_list)):
@@ -135,7 +137,8 @@ class CalStatusViewSet(APIView):
             zoorimo_status = -2
 
         return JsonResponse({
-            'status': str(zoorimo_status)
+            'status': str(zoorimo_status),
+            'size': str(zoorimo.size)
         })
 
 
