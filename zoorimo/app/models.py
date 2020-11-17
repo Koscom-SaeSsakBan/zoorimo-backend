@@ -87,7 +87,9 @@ class Kospi(models.Model):
         null=False,
         blank=False
     )
-    code = models.IntegerField(
+    code = models.CharField(
         verbose_name='코드',
-        null=False
+        max_length=255,
+        null=False,
+        blank=False
     )
