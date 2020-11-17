@@ -102,7 +102,7 @@ class StockRegisterViewSet(APIView):
                 s.stock_name = stock_code
                 s.stock_count = stock_count
                 s.average_price = stock_price
-                # s.save()
+                s.save()
 
 
 
@@ -120,6 +120,7 @@ class StockStatusViewSet(APIView):
         stock_name_list = []
         stock_user_price = []
         stock_cur_price = []
+        stock_count = []
         res_dict = []
 
         for i in range(len(stock_list)):
@@ -127,6 +128,7 @@ class StockStatusViewSet(APIView):
             stock_code_list.append(code)
             stock_name_list.append(Kospi.objects.get(code=code).name)
             stock_user_price.append(stock_list[i].average_price)
+            stock_count.append(stock_list[i].stock_count)
 
             # Api 보내고 현재 평단가 계산
             URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx3c412d920c714a50bcc459a83fca3a04'
@@ -139,6 +141,7 @@ class StockStatusViewSet(APIView):
             dict = {
                 'name': stock_name_list[i],
                 'user_price': stock_user_price[i],
+                'stock_count': stock_count[i],
                 'cur_price': stock_cur_price[i],
                 'profit_and_loss': stock_cur_price[i] - stock_user_price[i],
                 'yield_rate': stock_cur_price[i] / stock_user_price[i]
