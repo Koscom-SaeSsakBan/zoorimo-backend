@@ -129,7 +129,7 @@ class StockStatusViewSet(APIView):
             stock_count.append(stock_list[i].stock_count)
 
             # Api 보내고 현재 평단가 계산
-            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx3c412d920c714a50bcc459a83fca3a04'
+            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx5bb7d18af9fb420199cea9f78e98ba07'
             response = requests.get(URL)
 
             cur_price = response.json()['result']['trdPrc']
@@ -170,14 +170,14 @@ class CalStatusViewSet(APIView):
             total_price += stock_list[i].stock_count * stock_list[i].average_price
 
             # Api 보내고 현재 평단가 계산
-            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xxb671398c26324a93b43ae78275d1e0a4'
+            URL = 'https://sandbox-apigw.koscom.co.kr/v2/market/stocks/kospi/'+stock_code_list[i]+'/price?apikey=l7xx5bb7d18af9fb420199cea9f78e98ba07'
             response = requests.get(URL)
 
             cur_price = response.json()['result']['trdPrc']
             cur_total_price += cur_price * stock_list[i].stock_count
 
         ### 여기 For DEMO
-        yield_rate = ((cur_total_price - total_price) / total_price) * 10000
+        yield_rate = ((cur_total_price - total_price) / total_price) * 50000
         zoorimo_status = 0
         print(yield_rate)
 
